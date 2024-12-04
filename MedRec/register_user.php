@@ -11,6 +11,8 @@ $password = $_POST['password'];
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
 // SQL query to insert the new user
+
+//tukar pada prepared statement (app security)
 $sql = "INSERT INTO user (`Username`, `Email`, `Password`) VALUES ('$full_name', '$email', '$password')";
 
 // Execute the query
