@@ -177,7 +177,7 @@ function getUserProfile($conn) {
         $user = $result->fetch_assoc();
 
         // Ensure the profile picture URL is complete and accessible
-        $baseURL = 'http://192.168.0.15/Back-End-APi/MedRec/ProfilePicture/'; // Change this to match your server setup
+        $baseURL = 'http://192.168.0.15/BackEnd-APi/MedRec/ProfilePicture/'; // Change this to match your server setup
         $user['ProfilePicture'] = $baseURL . $user['ProfilePicture'];
 
         echo json_encode(["status" => "success", "data" => $user]);
