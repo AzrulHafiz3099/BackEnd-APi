@@ -16,6 +16,7 @@ define('SECRET_KEY', 'ZXhhbXBsZXNlY3JldGtleWZvc3RlYGVy');  // Change this to a m
 
 // Retrieve the action from the request
 $action = $_POST['action'] ?? '';
+error_log("Received action user: " . $action); // Log the action received for debugging
 
 switch ($action) {
     case 'login':
@@ -163,26 +164,50 @@ function getUserProfile($conn) {
     }
 
     $userID = $decoded->id;
+    error_log("Debug: UserID before query: " . $userID); // Log to PHP error log
 
-    $stmt = $conn->prepare("SELECT Fullname, Email, Password, ProfilePicture FROM user_account WHERE UserID = ?");
-    if ($stmt === false) {
+    error_log("Debug: Query with UserID: " . "SELECT Fullname, Email, Password, ProfilePicture FROM user_account WHERE UserID = " . "$userID");
+
+
+
+    session_write_close();  // Close the session before querying
+    $conn->query("FLUSH QUERY CACHE"); // Ensure cache is cleared
+    $conn->query("RESET QUERY CACHE");
+    $stmt2 = $conn->prepare("SELECT Fullname, Email, Password, ProfilePicture FROM user_account WHERE UserID = ?");
+    if ($stmt2 === false) {
         die('MySQL prepare error: ' . $conn->error);
     }
+    
+    error_log("Debug: UserID before query 2: " . $userID); // Log to PHP error log
+    $stmt2->bind_param("s", $userID);
 
-    $stmt->bind_param("i", $userID);
-    $stmt->execute();
-    $result = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
+    error_log("Debug: UserID before query 3: " . $userID); // Log to PHP error log
+    $stmt2->execute();
+    $conn->query("SET SESSION query_cache_type = OFF");
+
+    $result2 = $stmt2->get_result();
+
+    // Log the raw result
+    error_log("Debug: Raw query result: " . print_r($result2, true));
+
+    error_log("Debug: UserID before query 4: " . $userID); // Log to PHP error log
+
+    if ($result2->num_rows > 0) {
+        $user = $result2->fetch_assoc();
+
+        error_log("Debug: UserID before query 5: " . $userID); // Log to PHP error log
+        error_log("Debug: user before query: " . json_encode($user)); // Log the user array as JSON
+
 
         // Ensure the profile picture URL is complete and accessible
-        $baseURL = 'http://192.168.0.15/BackEnd-APi/MedRec/ProfilePicture/'; // Change this to match your server setup
+        $baseURL = 'http://192.168.0.28/BackEnd-APi/MedRec/ProfilePicture/'; // Change this to match your server setup
         $user['ProfilePicture'] = $baseURL . $user['ProfilePicture'];
 
-        echo json_encode(["status" => "success", "data" => $user]);
+        // Include the userID in the response for debugging
+        echo json_encode(["status" => "success", "data" => $user, "debug_user_id" => $userID]);
     } else {
-        echo json_encode(["status" => "error", "message" => "User not found"]);
+        echo json_encode(["status" => "error", "message" => "User not found", "debug_user_id" => $userID]);
     }
 
     $stmt->close();
