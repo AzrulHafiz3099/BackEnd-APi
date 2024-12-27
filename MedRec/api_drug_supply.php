@@ -77,6 +77,7 @@ function getDrugs($conn, $vendorID) {
 function getDrugDetails($conn, $supplyID) {
     $query = "
         SELECT
+            DD.DrugID,
             DS.Quantity,
             DD.BrandName,
             DD.GenericName,
@@ -104,6 +105,7 @@ function getDrugDetails($conn, $supplyID) {
 
         if ($row = $result->fetch_assoc()) {
             $drugDetails = [
+                'DrugID' => $row['DrugID'],
                 'Quantity' => $row['Quantity'],
                 'BrandName' => $row['BrandName'],
                 'GenericName' => $row['GenericName'],

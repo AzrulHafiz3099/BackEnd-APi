@@ -148,13 +148,30 @@ function registerUser($conn) {
     $stmt->bind_param("ssss", $full_name, $email, $hashed_password, $role);
 
     if ($stmt->execute()) {
-        echo json_encode(["status" => "success", "message" => "User registered successfully"]);
+        // Retrieve the UserID based on the email after inserting the user
+        $stmt_userID = $conn->prepare("SELECT UserID FROM user_account WHERE Email = ?");
+        $stmt_userID->bind_param("s", $email);
+        $stmt_userID->execute();
+        $stmt_userID->store_result();
+        $stmt_userID->bind_result($userID);
+        
+        if ($stmt_userID->fetch()) {
+            error_log("UserID: " . $userID);
+            echo json_encode(["status" => "success", "message" => "User registered successfully", "UserID" => $userID]);
+        } else {
+            echo json_encode(["status" => "error", "message" => "Failed to retrieve UserID"]);
+        }
+
+        $stmt_userID->close();
     } else {
         echo json_encode(["status" => "error", "message" => "Failed to register user: " . $stmt->error]);
     }
 
     $stmt->close();
 }
+
+
+
 
 // Function to get user profile information
 function getUserProfile($conn) {
@@ -166,14 +183,14 @@ function getUserProfile($conn) {
     $userID = $decoded->id;
     error_log("Debug: UserID before query: " . $userID); // Log to PHP error log
 
-    error_log("Debug: Query with UserID: " . "SELECT Fullname, Email, Password, ProfilePicture FROM user_account WHERE UserID = " . "$userID");
+    error_log("Debug: Query with UserID: " . "SELECT UserID, Fullname, Email, Password, ProfilePicture FROM user_account WHERE UserID = " . "$userID");
 
 
 
     session_write_close();  // Close the session before querying
     $conn->query("FLUSH QUERY CACHE"); // Ensure cache is cleared
     $conn->query("RESET QUERY CACHE");
-    $stmt2 = $conn->prepare("SELECT Fullname, Email, Password, ProfilePicture FROM user_account WHERE UserID = ?");
+    $stmt2 = $conn->prepare("SELECT UserID, Fullname, Email, Password, ProfilePicture FROM user_account WHERE UserID = ?");
     if ($stmt2 === false) {
         die('MySQL prepare error: ' . $conn->error);
     }
@@ -210,7 +227,7 @@ function getUserProfile($conn) {
         echo json_encode(["status" => "error", "message" => "User not found", "debug_user_id" => $userID]);
     }
 
-    $stmt->close();
+    $stmt2->close();
 }
 
 

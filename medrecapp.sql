@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 15, 2024 at 06:32 PM
+-- Generation Time: Dec 27, 2024 at 04:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -25,13 +25,164 @@ DELIMITER $$
 --
 -- Functions
 --
-CREATE DEFINER=`root`@`localhost` FUNCTION `GetNextNumericPart` () RETURNS INT(11) DETERMINISTIC BEGIN
+CREATE DEFINER=`root`@`localhost` FUNCTION `GetNextCart` () RETURNS INT(11) DETERMINISTIC BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(CartID, 4) AS UNSIGNED)), 0) + 1 INTO next_id
+    FROM cart;
+    RETURN next_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `GetNextCartItem` () RETURNS INT(11) DETERMINISTIC BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(CartItemID, 4) AS UNSIGNED)), 0) + 1 INTO next_id
+    FROM cart_item;
+    RETURN next_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `GetNextDrugDetails` () RETURNS INT(11) DETERMINISTIC BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(DrugID, 4) AS UNSIGNED)), 0) + 1 INTO next_id
+    FROM drug_details;
+    RETURN next_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `GetNextDrugHeader` () RETURNS INT(11) DETERMINISTIC BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(DrugHeaderID, 4) AS UNSIGNED)), 0) + 1 INTO next_id
+    FROM drug_header;
+    RETURN next_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `GetNextDrugPrice` () RETURNS INT(11) DETERMINISTIC BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(PriceID, 4) AS UNSIGNED)), 0) + 1 INTO next_id
+    FROM drug_price;
+    RETURN next_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `GetNextDrugSupply` () RETURNS INT(11) DETERMINISTIC BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(SupplyID, 4) AS UNSIGNED)), 0) + 1 INTO next_id
+    FROM drug_supply;
+    RETURN next_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `GetNextOrder` () RETURNS INT(11) DETERMINISTIC BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(OrderID, 4) AS UNSIGNED)), 0) + 1 INTO next_id
+    FROM `order`;
+    RETURN next_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `GetNextPatient` () RETURNS INT(11) DETERMINISTIC BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(PatientID, 4) AS UNSIGNED)), 0) + 1 INTO next_id
+    FROM patient;
+    RETURN next_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `GetNextReceipt` () RETURNS INT(11) DETERMINISTIC BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(ReceiptID, 4) AS UNSIGNED)), 0) + 1 INTO next_id
+    FROM receipt;
+    RETURN next_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `GetNextReminder` () RETURNS INT(11) DETERMINISTIC BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(ReminderID, 4) AS UNSIGNED)), 0) + 1 INTO next_id
+    FROM reminder;
+    RETURN next_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `GetNextSymptoms` () RETURNS INT(11) DETERMINISTIC BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(SymptomID, 4) AS UNSIGNED)), 0) + 1 INTO next_id
+    FROM symptoms;
+    RETURN next_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `GetNextUserAccount` () RETURNS INT(11) DETERMINISTIC BEGIN
     DECLARE next_id INT;
     SELECT COALESCE(MAX(CAST(SUBSTRING(UserID, 4) AS UNSIGNED)), 0) + 1 INTO next_id
     FROM user_account;
     RETURN next_id;
 END$$
 
+CREATE DEFINER=`root`@`localhost` FUNCTION `GetNextVendor` () RETURNS INT(11) DETERMINISTIC BEGIN
+    DECLARE next_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(VendorID, 4) AS UNSIGNED)), 0) + 1 INTO next_id
+    FROM vendor;
+    RETURN next_id;
+END$$
+
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `CartID` varchar(255) NOT NULL,
+  `UserID` varchar(255) DEFAULT NULL,
+  `createdDate` date DEFAULT NULL,
+  `Status` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`CartID`, `UserID`, `createdDate`, `Status`) VALUES
+('C_0001', 'US_0001', '2024-12-20', 'Completed'),
+('C_0002', 'US_0002', '2024-12-23', 'Active'),
+('C_0003', 'US_0003', '2024-12-24', 'active');
+
+--
+-- Triggers `cart`
+--
+DELIMITER $$
+CREATE TRIGGER `GenerateCartID` BEFORE INSERT ON `cart` FOR EACH ROW BEGIN
+    SET NEW.CartID = CONCAT('C_', LPAD(GetNextCart(), 4, '0'));
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart_item`
+--
+
+CREATE TABLE `cart_item` (
+  `CartItemID` varchar(255) NOT NULL,
+  `CartID` varchar(255) DEFAULT NULL,
+  `DrugID` varchar(255) DEFAULT NULL,
+  `GenericName` varchar(255) NOT NULL,
+  `DrugImage` varchar(255) NOT NULL,
+  `Quantity` int(11) DEFAULT NULL,
+  `Price` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart_item`
+--
+
+INSERT INTO `cart_item` (`CartItemID`, `CartID`, `DrugID`, `GenericName`, `DrugImage`, `Quantity`, `Price`) VALUES
+('CI_0001', 'C_0001', 'D_0002', '', '', 5, 10.20),
+('CI_0003', 'C_0002', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 3, 6.60),
+('CI_0004', 'C_0002', 'D_0002', 'Antibiotic', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/venom.jpg', 2, 10.20);
+
+--
+-- Triggers `cart_item`
+--
+DELIMITER $$
+CREATE TRIGGER `GenerateCartItemID` BEFORE INSERT ON `cart_item` FOR EACH ROW BEGIN
+    SET NEW.CartItemID = CONCAT('CI_', LPAD(GetNextCartItem(), 4, '0'));
+END
+$$
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -66,6 +217,16 @@ INSERT INTO `drug_details` (`DrugID`, `DrugHeaderID`, `SupplyID`, `BrandName`, `
 ('D_0003', 'DH_0002', 'S_0003', 'test', 'tt', 'tt', 'tt', 'tt', 'tt', '2024-12-24', 'tt', 10.20, 'tt'),
 ('D_0004', 'DH_0001', 'S_0004', 'Test3', '32432432', '32432432', '432432432', '4324324', '34234242', '2024-12-11', '32423432', 6.60, '43223423');
 
+--
+-- Triggers `drug_details`
+--
+DELIMITER $$
+CREATE TRIGGER `GenerateDrugDetailsID` BEFORE INSERT ON `drug_details` FOR EACH ROW BEGIN
+    SET NEW.DrugID = CONCAT('D_', LPAD(GetNextDrugDetails(), 4, '0'));
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -85,6 +246,16 @@ INSERT INTO `drug_header` (`DrugHeaderID`, `Category_Name`) VALUES
 ('DH_0001', 'Painkiller'),
 ('DH_0002', 'Antibiotics');
 
+--
+-- Triggers `drug_header`
+--
+DELIMITER $$
+CREATE TRIGGER `GenerateDrugHeaderID` BEFORE INSERT ON `drug_header` FOR EACH ROW BEGIN
+    SET NEW.DrugHeaderID = CONCAT('DH_', LPAD(GetNextDrugHeader(), 4, '0'));
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -98,6 +269,23 @@ CREATE TABLE `drug_price` (
   `Location` varchar(255) DEFAULT NULL,
   `Price` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `drug_price`
+--
+
+INSERT INTO `drug_price` (`PriceID`, `DrugID`, `Vendor_Name`, `Location`, `Price`) VALUES
+('PR_0001', 'D_0003', 'dsfsdf', 'fsdfds', 10.20);
+
+--
+-- Triggers `drug_price`
+--
+DELIMITER $$
+CREATE TRIGGER `GeneratePriceID` BEFORE INSERT ON `drug_price` FOR EACH ROW BEGIN
+    SET NEW.PriceID = CONCAT('PR_', LPAD(GetNextDrugPrice(), 4, '0'));
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -124,6 +312,47 @@ INSERT INTO `drug_supply` (`SupplyID`, `DrugHeaderID`, `VendorID`, `Quantity`, `
 ('S_0003', 'DH_0001', 'V_0002', 5, '2024-12-11', '2024-12-10'),
 ('S_0004', 'DH_0002', 'V_0001', 5, '2024-12-13', '2024-12-13');
 
+--
+-- Triggers `drug_supply`
+--
+DELIMITER $$
+CREATE TRIGGER `GenerateDrugSupplyID` BEFORE INSERT ON `drug_supply` FOR EACH ROW BEGIN
+    SET NEW.SupplyID = CONCAT('S_', LPAD(GetNextDrugSupply(), 4, '0'));
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order`
+--
+
+CREATE TABLE `order` (
+  `OrderID` varchar(255) NOT NULL,
+  `CartID` varchar(255) DEFAULT NULL,
+  `TotalPrice` decimal(10,2) DEFAULT NULL,
+  `OrderDate` date DEFAULT NULL,
+  `PaymentStatus` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order`
+--
+
+INSERT INTO `order` (`OrderID`, `CartID`, `TotalPrice`, `OrderDate`, `PaymentStatus`) VALUES
+('O_0001', 'C_0001', 10.00, '2024-12-19', '2121');
+
+--
+-- Triggers `order`
+--
+DELIMITER $$
+CREATE TRIGGER `GenerateOrderID` BEFORE INSERT ON `order` FOR EACH ROW BEGIN
+    SET NEW.OrderID = CONCAT('O_', LPAD(GetNextOrder(), 4, '0'));
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -131,15 +360,68 @@ INSERT INTO `drug_supply` (`SupplyID`, `DrugHeaderID`, `VendorID`, `Quantity`, `
 --
 
 CREATE TABLE `patient` (
-  `PatientID` int(11) NOT NULL,
-  `UserID` varchar(200) NOT NULL,
-  `Name` varchar(200) NOT NULL,
-  `Age` varchar(200) NOT NULL,
-  `Gender` varchar(200) NOT NULL,
-  `Address` varchar(200) NOT NULL,
-  `MedicalHistory` varchar(200) NOT NULL,
-  `PhoneNumber` varchar(200) NOT NULL
+  `PatientID` varchar(255) NOT NULL,
+  `UserID` varchar(255) NOT NULL,
+  `SymptomID` varchar(255) DEFAULT NULL,
+  `DrugHeaderID` varchar(255) DEFAULT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Age` int(11) DEFAULT NULL,
+  `Gender` varchar(255) DEFAULT NULL,
+  `Address` varchar(255) DEFAULT NULL,
+  `MedicalHistory` varchar(255) DEFAULT NULL,
+  `Phonenumber` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `patient`
+--
+
+INSERT INTO `patient` (`PatientID`, `UserID`, `SymptomID`, `DrugHeaderID`, `Name`, `Age`, `Gender`, `Address`, `MedicalHistory`, `Phonenumber`) VALUES
+('P_0001', 'US_0001', 'SY_0001', 'DH_0001', 'Amir Hamzah', 22, 'Male', 'Durian Tunggal', 'None', '0123456789');
+
+--
+-- Triggers `patient`
+--
+DELIMITER $$
+CREATE TRIGGER `GeneratePatientID` BEFORE INSERT ON `patient` FOR EACH ROW BEGIN
+    SET NEW.PatientID = CONCAT('P_', LPAD(GetNextPatient(), 4, '0'));
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `receipt`
+--
+
+CREATE TABLE `receipt` (
+  `ReceiptID` varchar(255) NOT NULL,
+  `UserID` varchar(255) DEFAULT NULL,
+  `OrderID` varchar(255) DEFAULT NULL,
+  `PaymentDate` date DEFAULT NULL,
+  `TotalAmount` decimal(10,2) DEFAULT NULL,
+  `PaymentMethod` varchar(255) DEFAULT NULL,
+  `TransactionReference` varchar(255) DEFAULT NULL,
+  `Vendor` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `receipt`
+--
+
+INSERT INTO `receipt` (`ReceiptID`, `UserID`, `OrderID`, `PaymentDate`, `TotalAmount`, `PaymentMethod`, `TransactionReference`, `Vendor`) VALUES
+('RC_0001', 'US_0001', 'O_0001', '2024-12-11', 10.20, 'sdfsd', 'sdsd', 'sdsd');
+
+--
+-- Triggers `receipt`
+--
+DELIMITER $$
+CREATE TRIGGER `GenerateReceiptID` BEFORE INSERT ON `receipt` FOR EACH ROW BEGIN
+    SET NEW.ReceiptID = CONCAT('RC_', LPAD(GetNextReceipt(), 4, '0'));
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -148,13 +430,60 @@ CREATE TABLE `patient` (
 --
 
 CREATE TABLE `reminder` (
-  `ReminderID` int(200) NOT NULL,
-  `PatientID` varchar(200) NOT NULL,
-  `Title` varchar(200) NOT NULL,
-  `Description` varchar(200) NOT NULL,
-  `ReminderDate` varchar(200) NOT NULL,
-  `isCompleted` varchar(200) NOT NULL
+  `ReminderID` varchar(255) NOT NULL,
+  `PatientID` varchar(255) NOT NULL,
+  `Title` varchar(255) DEFAULT NULL,
+  `Description` varchar(255) DEFAULT NULL,
+  `ReminderDate` date DEFAULT NULL,
+  `isCompleted` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reminder`
+--
+
+INSERT INTO `reminder` (`ReminderID`, `PatientID`, `Title`, `Description`, `ReminderDate`, `isCompleted`) VALUES
+('R_0001', 'P_0001', 'Alarm1', 'None', '2024-12-20', 'Completed');
+
+--
+-- Triggers `reminder`
+--
+DELIMITER $$
+CREATE TRIGGER `GenerateReminderID` BEFORE INSERT ON `reminder` FOR EACH ROW BEGIN
+    SET NEW.ReminderID = CONCAT('R_', LPAD(GetNextReminder(), 4, '0'));
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `symptoms`
+--
+
+CREATE TABLE `symptoms` (
+  `SymptomID` varchar(255) NOT NULL,
+  `DrugHeaderID` varchar(255) DEFAULT NULL,
+  `Description` varchar(255) DEFAULT NULL,
+  `Severity` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `symptoms`
+--
+
+INSERT INTO `symptoms` (`SymptomID`, `DrugHeaderID`, `Description`, `Severity`) VALUES
+('SY_0001', 'DH_0001', 'Headache', 'Minimum');
+
+--
+-- Triggers `symptoms`
+--
+DELIMITER $$
+CREATE TRIGGER `GenerateSymptomID` BEFORE INSERT ON `symptoms` FOR EACH ROW BEGIN
+    SET NEW.SymptomID = CONCAT('SY_', LPAD(GetNextSymptoms(), 4, '0'));
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -163,34 +492,31 @@ CREATE TABLE `reminder` (
 --
 
 CREATE TABLE `user_account` (
-  `UserID` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `Fullname` varchar(200) NOT NULL,
-  `Email` varchar(200) NOT NULL,
-  `Password` varchar(200) NOT NULL,
-  `Phonenumber` varchar(200) NOT NULL,
-  `DateOfBirth` varchar(200) NOT NULL,
-  `ProfilePicture` varchar(200) NOT NULL,
-  `Role` varchar(200) NOT NULL
+  `UserID` varchar(255) NOT NULL,
+  `Fullname` varchar(255) DEFAULT NULL,
+  `Email` varchar(255) DEFAULT NULL,
+  `Password` varchar(255) DEFAULT NULL,
+  `Phonenumber` varchar(255) DEFAULT NULL,
+  `DateOFBirth` date DEFAULT NULL,
+  `ProfilePicture` varchar(255) DEFAULT NULL,
+  `Role` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_account`
 --
 
-INSERT INTO `user_account` (`UserID`, `Fullname`, `Email`, `Password`, `Phonenumber`, `DateOfBirth`, `ProfilePicture`, `Role`) VALUES
-('US_0003', 'Haikal Zabidi', 'haikal@gmail.com', '$2y$10$df/.iJh.BkHu0P90pDtRpOAjXhLKUeeNxxT0Yokx5tvRA.qQNQfki', '', '', '', 'user'),
-('US_0004', 'Nik Daniel', 'nik@gmail.com', '$2y$10$N6HEYT3xFEsglmbPTWJ7iutLoc/GDn0y.8MYzzo.zq020cohi.niu', '', '', '', 'user'),
-('US_0005', 'Azrul Hafiz', 'azrul', '$2y$10$sVqJpYSvYQnQGKNgkSFIsua534w5JD9BnJuYZb6Ie/F4Yhmmoxeem', '0172090464', '10/08/2002', 'pp.jpg', 'user'),
-('US_0006', 'Amir Hamzah', 'amir@gmail.com', '$2y$10$fE7KsykJ8hXURDFiKXcQjeio87pCGxvO5/.9Cn.1rxOSrHKM1ruS2', '0123456789', '10/02/2021', 'pp2.jpg', 'user');
+INSERT INTO `user_account` (`UserID`, `Fullname`, `Email`, `Password`, `Phonenumber`, `DateOFBirth`, `ProfilePicture`, `Role`) VALUES
+('US_0001', 'Azrul', 'azrultest', '1234', '123431', NULL, '21321', '213'),
+('US_0002', 'Azrul Hafiz', '1', '$2y$10$.Ugby1JCx76KmGhiXz1T3.MPMybiCNaZ/Kf3wLbzt4rCdJPtjvOnu', '0123456789', '2024-12-10', 'pp.jpg', 'user'),
+('US_0003', 'Haikal', 'haikal@gmail.com', '$2y$10$w3BvkZNpi1ce00E7eZHLIO/JxXaP4ZjeNSNVa7n4FQcBQSfPs368S', NULL, NULL, NULL, 'user');
 
 --
 -- Triggers `user_account`
 --
 DELIMITER $$
 CREATE TRIGGER `GenerateUserID` BEFORE INSERT ON `user_account` FOR EACH ROW BEGIN
-    DECLARE numeric_part INT;
-    SET numeric_part = GetNextNumericPart();
-    SET NEW.UserID = CONCAT('US_', LPAD(numeric_part, 4, '0'));
+    SET NEW.UserID = CONCAT('US_', LPAD(GetNextUserAccount(), 4, '0'));
 END
 $$
 DELIMITER ;
@@ -223,8 +549,33 @@ INSERT INTO `vendor` (`VendorID`, `Fullname`, `Username`, `Password`, `Address`,
 ('V_0002', 'Farmasi NK Melaka', 'FNK', '1234', 'Farmasi NK, DT18, Jalan Pusat Perniagaan Durian Tunggal 2 Pusat Perniagaan Durian Tunggal Durian Tunggal, 76100 Alor Gajah, Melaka', '065490927', 'fnk@gmail.com', '2.312388173095135', '102.28001973178266', 'fnk.jpg');
 
 --
+-- Triggers `vendor`
+--
+DELIMITER $$
+CREATE TRIGGER `GenerateVendorID` BEFORE INSERT ON `vendor` FOR EACH ROW BEGIN
+    SET NEW.VendorID = CONCAT('V_', LPAD(GetNextVendor(), 4, '0'));
+END
+$$
+DELIMITER ;
+
+--
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`CartID`),
+  ADD KEY `UserID` (`UserID`);
+
+--
+-- Indexes for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  ADD PRIMARY KEY (`CartItemID`),
+  ADD KEY `CartID` (`CartID`),
+  ADD KEY `DrugID` (`DrugID`);
 
 --
 -- Indexes for table `drug_details`
@@ -256,16 +607,42 @@ ALTER TABLE `drug_supply`
   ADD KEY `VendorID` (`VendorID`);
 
 --
+-- Indexes for table `order`
+--
+ALTER TABLE `order`
+  ADD PRIMARY KEY (`OrderID`),
+  ADD KEY `CartID` (`CartID`);
+
+--
 -- Indexes for table `patient`
 --
 ALTER TABLE `patient`
-  ADD PRIMARY KEY (`PatientID`);
+  ADD PRIMARY KEY (`PatientID`),
+  ADD KEY `fk_patient_userid` (`UserID`),
+  ADD KEY `fk_patient_symptomid` (`SymptomID`),
+  ADD KEY `fk_patient_drugheaderid` (`DrugHeaderID`);
+
+--
+-- Indexes for table `receipt`
+--
+ALTER TABLE `receipt`
+  ADD PRIMARY KEY (`ReceiptID`),
+  ADD KEY `UserID` (`UserID`),
+  ADD KEY `OrderID` (`OrderID`);
 
 --
 -- Indexes for table `reminder`
 --
 ALTER TABLE `reminder`
-  ADD PRIMARY KEY (`ReminderID`);
+  ADD PRIMARY KEY (`ReminderID`),
+  ADD KEY `fk_reminder_patientid` (`PatientID`);
+
+--
+-- Indexes for table `symptoms`
+--
+ALTER TABLE `symptoms`
+  ADD PRIMARY KEY (`SymptomID`),
+  ADD KEY `fk_symptoms_drugheaderid` (`DrugHeaderID`);
 
 --
 -- Indexes for table `user_account`
@@ -280,24 +657,21 @@ ALTER TABLE `vendor`
   ADD PRIMARY KEY (`VendorID`);
 
 --
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `patient`
---
-ALTER TABLE `patient`
-  MODIFY `PatientID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `reminder`
---
-ALTER TABLE `reminder`
-  MODIFY `ReminderID` int(200) NOT NULL AUTO_INCREMENT;
-
---
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user_account` (`UserID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `cart_item`
+--
+ALTER TABLE `cart_item`
+  ADD CONSTRAINT `cart_item_ibfk_1` FOREIGN KEY (`CartID`) REFERENCES `cart` (`CartID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `cart_item_ibfk_2` FOREIGN KEY (`DrugID`) REFERENCES `drug_details` (`DrugID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `drug_details`
@@ -318,6 +692,39 @@ ALTER TABLE `drug_price`
 ALTER TABLE `drug_supply`
   ADD CONSTRAINT `drug_supply_ibfk_1` FOREIGN KEY (`DrugHeaderID`) REFERENCES `drug_header` (`DrugHeaderID`),
   ADD CONSTRAINT `drug_supply_ibfk_2` FOREIGN KEY (`VendorID`) REFERENCES `vendor` (`VendorID`);
+
+--
+-- Constraints for table `order`
+--
+ALTER TABLE `order`
+  ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`CartID`) REFERENCES `cart` (`CartID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `patient`
+--
+ALTER TABLE `patient`
+  ADD CONSTRAINT `fk_patient_drugheaderid` FOREIGN KEY (`DrugHeaderID`) REFERENCES `drug_header` (`DrugHeaderID`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_patient_symptomid` FOREIGN KEY (`SymptomID`) REFERENCES `symptoms` (`SymptomID`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_patient_userid` FOREIGN KEY (`UserID`) REFERENCES `user_account` (`UserID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `receipt`
+--
+ALTER TABLE `receipt`
+  ADD CONSTRAINT `receipt_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user_account` (`UserID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `receipt_ibfk_2` FOREIGN KEY (`OrderID`) REFERENCES `order` (`OrderID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `reminder`
+--
+ALTER TABLE `reminder`
+  ADD CONSTRAINT `fk_reminder_patientid` FOREIGN KEY (`PatientID`) REFERENCES `patient` (`PatientID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `symptoms`
+--
+ALTER TABLE `symptoms`
+  ADD CONSTRAINT `fk_symptoms_drugheaderid` FOREIGN KEY (`DrugHeaderID`) REFERENCES `drug_header` (`DrugHeaderID`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

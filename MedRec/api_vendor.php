@@ -21,7 +21,7 @@ switch ($action) {
 
 // Function to get all vendors
 function getVendors($conn) {
-    $stmt = $conn->prepare("SELECT VendorID, Fullname FROM vendor");
+    $stmt = $conn->prepare("SELECT VendorID, Fullname, Address, ContactNumber, Email FROM vendor");
     if ($stmt === false) {
         echo json_encode(["status" => "error", "message" => "Server error: " . $conn->error]);
         return;
