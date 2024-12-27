@@ -128,9 +128,9 @@ function getCartItems($conn, $userID) {
     }
 
     $query = "SELECT ci.CartItemID, ci.CartID, ci.DrugID, ci.GenericName, ci.DrugImage, ci.Quantity, ci.Price
-              FROM cart_item ci
-              JOIN cart c ON ci.CartID = c.CartID
-              WHERE c.UserID = ?";
+          FROM cart_item ci
+          JOIN cart c ON ci.CartID = c.CartID
+          WHERE c.UserID = ? AND c.Status = 'active'";
 
     $stmt = $conn->prepare($query);
 
