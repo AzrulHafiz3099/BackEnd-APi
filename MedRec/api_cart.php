@@ -5,6 +5,7 @@ header('Content-Type: application/json');
 
 
 $action = $_POST['action'] ?? '';
+error_log("Action: " . $action);
 
 switch ($action) {
     case 'check_or_create_cart':

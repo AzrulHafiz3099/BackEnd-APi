@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 27, 2024 at 04:47 PM
+-- Generation Time: Dec 28, 2024 at 08:43 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -137,8 +137,26 @@ CREATE TABLE `cart` (
 
 INSERT INTO `cart` (`CartID`, `UserID`, `createdDate`, `Status`) VALUES
 ('C_0001', 'US_0001', '2024-12-20', 'Completed'),
-('C_0002', 'US_0002', '2024-12-23', 'Active'),
-('C_0003', 'US_0003', '2024-12-24', 'active');
+('C_0002', 'US_0002', '2024-12-23', 'Completed'),
+('C_0003', 'US_0003', '2024-12-24', 'active'),
+('C_0004', 'US_0002', '2024-12-27', 'Completed'),
+('C_0005', 'US_0002', '2024-12-27', 'Completed'),
+('C_0006', 'US_0002', '2024-12-27', 'Completed'),
+('C_0007', 'US_0002', '2024-12-28', 'Completed'),
+('C_0008', 'US_0002', '2024-12-28', 'Completed'),
+('C_0009', 'US_0002', '2024-12-28', 'Completed'),
+('C_0010', 'US_0002', '2024-12-28', 'Completed'),
+('C_0011', 'US_0002', '2024-12-28', 'Completed'),
+('C_0012', 'US_0002', '2024-12-28', 'Completed'),
+('C_0013', 'US_0002', '2024-12-28', 'Completed'),
+('C_0014', 'US_0002', '2024-12-28', 'Completed'),
+('C_0015', 'US_0002', '2024-12-28', 'Completed'),
+('C_0016', 'US_0002', '2024-12-28', 'Completed'),
+('C_0017', 'US_0002', '2024-12-28', 'Completed'),
+('C_0018', 'US_0002', '2024-12-28', 'Completed'),
+('C_0019', 'US_0002', '2024-12-28', 'Completed'),
+('C_0020', 'US_0002', '2024-12-28', 'Completed'),
+('C_0021', 'US_0002', '2024-12-28', 'active');
 
 --
 -- Triggers `cart`
@@ -173,7 +191,30 @@ CREATE TABLE `cart_item` (
 INSERT INTO `cart_item` (`CartItemID`, `CartID`, `DrugID`, `GenericName`, `DrugImage`, `Quantity`, `Price`) VALUES
 ('CI_0001', 'C_0001', 'D_0002', '', '', 5, 10.20),
 ('CI_0003', 'C_0002', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 3, 6.60),
-('CI_0004', 'C_0002', 'D_0002', 'Antibiotic', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/venom.jpg', 2, 10.20);
+('CI_0004', 'C_0004', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 2, 6.60),
+('CI_0006', 'C_0005', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 2, 6.60),
+('CI_0007', 'C_0006', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 1, 6.60),
+('CI_0008', 'C_0007', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 1, 6.60),
+('CI_0009', 'C_0008', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 1, 6.60),
+('CI_0010', 'C_0009', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 2, 6.60),
+('CI_0011', 'C_0010', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 1, 6.60),
+('CI_0012', 'C_0010', 'D_0002', 'Antibiotic', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/venom.jpg', 1, 10.20),
+('CI_0013', 'C_0011', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 1, 6.60),
+('CI_0014', 'C_0011', 'D_0003', 'tt', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/tt', 1, 10.20),
+('CI_0015', 'C_0012', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 1, 6.60),
+('CI_0016', 'C_0012', 'D_0002', 'Antibiotic', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/venom.jpg', 1, 10.20),
+('CI_0017', 'C_0013', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 1, 6.60),
+('CI_0018', 'C_0013', 'D_0003', 'tt', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/tt', 1, 10.20),
+('CI_0019', 'C_0014', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 1, 6.60),
+('CI_0020', 'C_0014', 'D_0003', 'tt', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/tt', 1, 10.20),
+('CI_0021', 'C_0015', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 1, 6.60),
+('CI_0022', 'C_0016', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 1, 6.60),
+('CI_0023', 'C_0017', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 1, 6.60),
+('CI_0024', 'C_0018', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 1, 6.60),
+('CI_0025', 'C_0018', 'D_0003', 'tt', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/tt', 1, 10.20),
+('CI_0026', 'C_0019', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 1, 6.60),
+('CI_0027', 'C_0019', 'D_0003', 'tt', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/tt', 1, 10.20),
+('CI_0028', 'C_0020', 'D_0001', 'Paracetamol', 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImage/paracetamol.jpg', 1, 6.60);
 
 --
 -- Triggers `cart_item`
@@ -333,6 +374,7 @@ CREATE TABLE `order` (
   `CartID` varchar(255) DEFAULT NULL,
   `TotalPrice` decimal(10,2) DEFAULT NULL,
   `OrderDate` date DEFAULT NULL,
+  `PaymentMethod` varchar(255) NOT NULL,
   `PaymentStatus` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -340,8 +382,26 @@ CREATE TABLE `order` (
 -- Dumping data for table `order`
 --
 
-INSERT INTO `order` (`OrderID`, `CartID`, `TotalPrice`, `OrderDate`, `PaymentStatus`) VALUES
-('O_0001', 'C_0001', 10.00, '2024-12-19', '2121');
+INSERT INTO `order` (`OrderID`, `CartID`, `TotalPrice`, `OrderDate`, `PaymentMethod`, `PaymentStatus`) VALUES
+('O_0001', 'C_0001', 10.00, '2024-12-19', '', '2121'),
+('O_0002', 'C_0002', 19.80, '2024-12-28', 'COD', 'Pending'),
+('O_0003', 'C_0004', 13.20, '2024-12-28', 'COD', 'Pending'),
+('O_0004', 'C_0005', 13.20, '2024-12-28', 'COD', 'Pending'),
+('O_0005', 'C_0006', 6.60, '2024-12-29', 'COD', 'Pending'),
+('O_0006', 'C_0007', 6.60, '2024-12-29', 'COD', 'Pending'),
+('O_0007', 'C_0008', 6.60, '2024-12-29', 'COD', 'Pending'),
+('O_0008', 'C_0009', 13.20, '2024-12-29', 'COD', 'Pending'),
+('O_0009', 'C_0010', 16.80, '2024-12-29', 'COD', 'Pending'),
+('O_0010', 'C_0011', 16.80, '2024-12-29', 'COD', 'Pending'),
+('O_0011', 'C_0012', 16.80, '2024-12-29', 'COD', 'Pending'),
+('O_0012', 'C_0013', 16.80, '2024-12-29', 'COD', 'Pending'),
+('O_0013', 'C_0014', 16.80, '2024-12-29', 'COD', 'Pending'),
+('O_0014', 'C_0015', 6.60, '2024-12-29', 'COD', 'Pending'),
+('O_0015', 'C_0016', 6.60, '2024-12-29', 'COD', 'Pending'),
+('O_0016', 'C_0017', 6.60, '2024-12-29', 'COD', 'Pending'),
+('O_0017', 'C_0018', 16.80, '2024-12-29', 'COD', 'Pending'),
+('O_0018', 'C_0019', 16.80, '2024-12-29', 'COD', 'Pending'),
+('O_0019', 'C_0020', 6.60, '2024-12-29', 'COD', 'Pending');
 
 --
 -- Triggers `order`
@@ -399,6 +459,8 @@ CREATE TABLE `receipt` (
   `ReceiptID` varchar(255) NOT NULL,
   `UserID` varchar(255) DEFAULT NULL,
   `OrderID` varchar(255) DEFAULT NULL,
+  `GenericNames` varchar(255) NOT NULL,
+  `Quantities` varchar(255) NOT NULL,
   `PaymentDate` date DEFAULT NULL,
   `TotalAmount` decimal(10,2) DEFAULT NULL,
   `PaymentMethod` varchar(255) DEFAULT NULL,
@@ -410,8 +472,19 @@ CREATE TABLE `receipt` (
 -- Dumping data for table `receipt`
 --
 
-INSERT INTO `receipt` (`ReceiptID`, `UserID`, `OrderID`, `PaymentDate`, `TotalAmount`, `PaymentMethod`, `TransactionReference`, `Vendor`) VALUES
-('RC_0001', 'US_0001', 'O_0001', '2024-12-11', 10.20, 'sdfsd', 'sdsd', 'sdsd');
+INSERT INTO `receipt` (`ReceiptID`, `UserID`, `OrderID`, `GenericNames`, `Quantities`, `PaymentDate`, `TotalAmount`, `PaymentMethod`, `TransactionReference`, `Vendor`) VALUES
+('RC_0001', 'US_0001', 'O_0001', '', '', '2024-12-11', 10.20, 'sdfsd', 'sdsd', 'sdsd'),
+('RC_0002', 'US_0002', 'O_0007', 'Paracetamol', '1', '2024-12-29', 6.60, 'Pending', NULL, 'Farmasi Durian Tunggal'),
+('RC_0003', 'US_0002', 'O_0009', 'Paracetamol,Antibiotic', '1,1', '2024-12-29', 16.80, 'Pending', NULL, 'Farmasi Durian Tunggal'),
+('RC_0004', 'US_0002', 'O_0010', 'Paracetamol', '1', '2024-12-29', 16.80, 'Pending', NULL, 'Farmasi Durian Tunggal'),
+('RC_0005', 'US_0002', 'O_0010', 'tt', '1', '2024-12-29', 16.80, 'Pending', NULL, 'Farmasi NK Melaka'),
+('RC_0006', 'US_0002', 'O_0011', 'Paracetamol,Antibiotic', '1,1', '2024-12-29', 16.80, 'Pending', NULL, 'Farmasi Durian Tunggal'),
+('RC_0007', 'US_0002', 'O_0012', 'Paracetamol,tt', '1,1', '2024-12-29', 16.80, 'Pending', NULL, 'Farmasi Durian Tunggal,Farmasi NK Melaka'),
+('RC_0008', 'US_0002', 'O_0015', 'Paracetamol', '1', '2024-12-29', 6.60, 'Pending', NULL, 'Farmasi Durian Tunggal'),
+('RC_0009', 'US_0002', 'O_0016', 'Paracetamol', '1', '2024-12-29', 6.60, 'COD', NULL, 'Farmasi Durian Tunggal'),
+('RC_0010', 'US_0002', 'O_0017', 'tt,Paracetamol', '1,1', '2024-12-29', 16.80, 'COD', NULL, 'Farmasi Durian Tunggal,Farmasi NK Melaka'),
+('RC_0011', 'US_0002', 'O_0018', 'tt,Paracetamol', '1,1', '2024-12-29', 16.80, 'COD', NULL, 'Farmasi Durian Tunggal,Farmasi NK Melaka'),
+('RC_0012', 'US_0002', 'O_0019', 'Paracetamol', '1', '2024-12-29', 6.60, 'COD', NULL, 'Farmasi Durian Tunggal');
 
 --
 -- Triggers `receipt`
