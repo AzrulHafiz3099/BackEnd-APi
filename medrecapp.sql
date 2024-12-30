@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 28, 2024 at 08:43 PM
+-- Generation Time: Dec 30, 2024 at 04:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -437,7 +437,10 @@ CREATE TABLE `patient` (
 --
 
 INSERT INTO `patient` (`PatientID`, `UserID`, `SymptomID`, `DrugHeaderID`, `Name`, `Age`, `Gender`, `Address`, `MedicalHistory`, `Phonenumber`) VALUES
-('P_0001', 'US_0001', 'SY_0001', 'DH_0001', 'Amir Hamzah', 22, 'Male', 'Durian Tunggal', 'None', '0123456789');
+('P_0001', 'US_0001', 'SY_0001', 'DH_0001', 'Amir Hamzah', 22, 'Male', 'Durian Tunggal', 'None', '0123456789'),
+('P_0002', 'US_0002', 'SY_0001', NULL, 'Azrul2', 22, 'Male', '02121', 'None', '0123456789'),
+('P_0006', 'US_0002', 'SY_0002', NULL, '21212121', 2121, 'Male', '212121', '2121', '212121'),
+('P_0007', 'US_0002', 'SY_0002', NULL, '89', 13, 'Female', '1313', '89', '980');
 
 --
 -- Triggers `patient`
@@ -546,7 +549,8 @@ CREATE TABLE `symptoms` (
 --
 
 INSERT INTO `symptoms` (`SymptomID`, `DrugHeaderID`, `Description`, `Severity`) VALUES
-('SY_0001', 'DH_0001', 'Headache', 'Minimum');
+('SY_0001', 'DH_0001', 'Headache', 'Minimum'),
+('SY_0002', 'DH_0002', 'Sakit', 'Maximum');
 
 --
 -- Triggers `symptoms`
