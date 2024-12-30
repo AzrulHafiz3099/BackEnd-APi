@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2024 at 04:17 PM
+-- Generation Time: Dec 30, 2024 at 10:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -241,6 +241,7 @@ CREATE TABLE `drug_details` (
   `Active_Ingredient` varchar(255) DEFAULT NULL,
   `Dosage` varchar(255) DEFAULT NULL,
   `Dosage_Form` varchar(255) DEFAULT NULL,
+  `DosageUsage` varchar(255) NOT NULL,
   `Manufacturer` varchar(255) DEFAULT NULL,
   `Manufacture_Date` date DEFAULT NULL,
   `SideEffects` text DEFAULT NULL,
@@ -252,11 +253,11 @@ CREATE TABLE `drug_details` (
 -- Dumping data for table `drug_details`
 --
 
-INSERT INTO `drug_details` (`DrugID`, `DrugHeaderID`, `SupplyID`, `BrandName`, `GenericName`, `Active_Ingredient`, `Dosage`, `Dosage_Form`, `Manufacturer`, `Manufacture_Date`, `SideEffects`, `Price`, `DrugImage`) VALUES
-('D_0001', 'DH_0001', 'S_0001', 'Panadol', 'Paracetamol', 'ubat', '650', 'tablet', 'paracetamol ', '2024-12-12', 'Sleepy\r\n', 6.60, 'paracetamol.jpg'),
-('D_0002', 'DH_0002', 'S_0002', 'Anti', 'Antibiotic', 'Venom', '1000', 'Liquid', 'Marvel', '2024-12-11', 'Buff', 10.20, 'venom.jpg'),
-('D_0003', 'DH_0002', 'S_0003', 'test', 'tt', 'tt', 'tt', 'tt', 'tt', '2024-12-24', 'tt', 10.20, 'tt'),
-('D_0004', 'DH_0001', 'S_0004', 'Test3', '32432432', '32432432', '432432432', '4324324', '34234242', '2024-12-11', '32423432', 6.60, '43223423');
+INSERT INTO `drug_details` (`DrugID`, `DrugHeaderID`, `SupplyID`, `BrandName`, `GenericName`, `Active_Ingredient`, `Dosage`, `Dosage_Form`, `DosageUsage`, `Manufacturer`, `Manufacture_Date`, `SideEffects`, `Price`, `DrugImage`) VALUES
+('D_0001', 'DH_0001', 'S_0001', 'Panadol', 'Paracetamol', 'ubat', '650', 'tablet', '1 pill per day', 'paracetamol ', '2024-12-12', 'Sleepy\r\n', 6.60, 'paracetamol.jpg'),
+('D_0002', 'DH_0002', 'S_0002', 'Anti', 'Antibiotic', 'Venom', '1000', 'Liquid', '2 pills per day', 'Marvel', '2024-12-11', 'Buff', 10.20, 'venom.jpg'),
+('D_0003', 'DH_0002', 'S_0003', 'test', 'tt', 'tt', 'tt', 'tt', '3 pills per day', 'tt', '2024-12-24', 'tt', 10.20, 'tt'),
+('D_0004', 'DH_0001', 'S_0004', 'Test3', '32432432', '32432432', '432432432', '4324324', '4 pills per day', '34234242', '2024-12-11', '32423432', 6.60, '43223423');
 
 --
 -- Triggers `drug_details`
@@ -510,7 +511,9 @@ CREATE TABLE `reminder` (
   `PatientID` varchar(255) NOT NULL,
   `Title` varchar(255) DEFAULT NULL,
   `Description` varchar(255) DEFAULT NULL,
+  `GenericName` varchar(255) NOT NULL,
   `ReminderDate` date DEFAULT NULL,
+  `ReminderTime` time NOT NULL,
   `isCompleted` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -518,8 +521,9 @@ CREATE TABLE `reminder` (
 -- Dumping data for table `reminder`
 --
 
-INSERT INTO `reminder` (`ReminderID`, `PatientID`, `Title`, `Description`, `ReminderDate`, `isCompleted`) VALUES
-('R_0001', 'P_0001', 'Alarm1', 'None', '2024-12-20', 'Completed');
+INSERT INTO `reminder` (`ReminderID`, `PatientID`, `Title`, `Description`, `GenericName`, `ReminderDate`, `ReminderTime`, `isCompleted`) VALUES
+('R_0001', 'P_0002', '2121', '2121', 'Antibiotic', '2024-12-30', '09:14:00', 'Active'),
+('R_0002', 'P_0002', '2323', '2323', 'tt', '2024-12-30', '09:14:00', 'Active');
 
 --
 -- Triggers `reminder`

@@ -24,7 +24,7 @@ function getDrugDetails($conn) {
         return;
     }
 
-    $stmt = $conn->prepare("SELECT GenericName, Price, DrugImage FROM drug_details WHERE DrugID = ?");
+    $stmt = $conn->prepare("SELECT GenericName, Dosage, Dosage_Form, DosageUsage, DrugImage FROM drug_details WHERE DrugID = ?");
     if ($stmt === false) {
         echo json_encode(["status" => "error", "message" => "Server error: " . $conn->error]);
         return;
@@ -36,9 +36,6 @@ function getDrugDetails($conn) {
 
     if ($result->num_rows > 0) {
         $drugDetails = $result->fetch_assoc();
-        // Append base URL to the image
-        $baseURL = 'http://192.168.0.28/BackEnd-APi/MedRec/DrugImages/';
-        $drugDetails['DrugImage'] = $baseURL . $drugDetails['DrugImage'];
         echo json_encode(["status" => "success", "drugDetails" => $drugDetails]);
     } else {
         echo json_encode(["status" => "error", "message" => "Drug not found"]);
@@ -46,6 +43,7 @@ function getDrugDetails($conn) {
 
     $stmt->close();
 }
+
 
 $conn->close();
 ?>
