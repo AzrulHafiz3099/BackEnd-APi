@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2024 at 10:25 PM
+-- Generation Time: Dec 31, 2024 at 10:53 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -297,6 +297,31 @@ CREATE TRIGGER `GenerateDrugHeaderID` BEFORE INSERT ON `drug_header` FOR EACH RO
 END
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `drug_inventory`
+--
+
+CREATE TABLE `drug_inventory` (
+  `InventoryID` int(11) NOT NULL,
+  `DrugID` varchar(255) NOT NULL,
+  `CurrentStock` int(11) NOT NULL DEFAULT 0,
+  `ReorderLevel` int(11) NOT NULL DEFAULT 0,
+  `LastRestockDate` date DEFAULT NULL,
+  `ExpirationDate` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `drug_inventory`
+--
+
+INSERT INTO `drug_inventory` (`InventoryID`, `DrugID`, `CurrentStock`, `ReorderLevel`, `LastRestockDate`, `ExpirationDate`) VALUES
+(1, 'D_0001', 50, 10, '2024-12-01', '2025-12-12'),
+(2, 'D_0002', 30, 5, '2024-12-05', '2025-11-15'),
+(3, 'D_0003', 100, 20, '2024-12-10', '2025-10-10'),
+(4, 'D_0004', 20, 5, '2024-12-12', '2025-09-30');
 
 -- --------------------------------------------------------
 
