@@ -7,25 +7,28 @@ $name = $_GET['name'] ?? ''; // Get the name parameter from the URL
 
 if ($name) {
     // Prepare SQL query to fetch the medicine details
-    $sql = "SELECT * FROM drug_details WHERE BrandName LIKE ? OR GenericName LIKE ?";
+    $sql = "SELECT BrandName, GenericName, Dosage, Manufacturer, SideEffects, DrugImage 
+            FROM drug_details 
+            WHERE BrandName LIKE ? OR GenericName LIKE ? 
+            LIMIT 1"; // Limit to 1 result
     if ($stmt = $conn->prepare($sql)) {
         $param = "%" . $name . "%"; // Bind parameter with wildcards for LIKE query
         $stmt->bind_param("ss", $param, $param); // Bind query parameters
 
         $stmt->execute();
-        $result = $stmt->get_result();
 
-        // Check if any result is returned
-        if ($result->num_rows > 0) {
-            $medicine = $result->fetch_assoc(); // Fetch the first matching result
-            // Only return the necessary fields
+        // Bind result variables
+        $stmt->bind_result($brandName, $genericName, $dosage, $manufacturer, $sideEffects, $drugImage);
+
+        if ($stmt->fetch()) {
+            // Fetch the first matching result
             $response = [
-                "BrandName" => $medicine['BrandName'],
-                "GenericName" => $medicine['GenericName'],
-                "Dosage" => $medicine['Dosage'],
-                "Manufacturer" => $medicine['Manufacturer'],
-                "SideEffects" => $medicine['SideEffects'],
-                "DrugImage" => $medicine['DrugImage']
+                "BrandName" => $brandName,
+                "GenericName" => $genericName,
+                "Dosage" => $dosage,
+                "Manufacturer" => $manufacturer,
+                "SideEffects" => $sideEffects,
+                "DrugImage" => $drugImage
             ];
             echo json_encode($response); // Return the required fields as JSON
         } else {
