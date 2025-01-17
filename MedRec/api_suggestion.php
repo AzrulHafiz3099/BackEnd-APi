@@ -13,17 +13,19 @@ if ($query) {
         $stmt->bind_param("ss", $param, $param); // Bind query parameters
 
         $stmt->execute();
-        $result = $stmt->get_result();
+
+        // Bind result variables
+        $stmt->bind_result($brandName);
 
         // Initialize an empty array for storing suggestions
         $suggestions = [];
-        while ($row = $result->fetch_assoc()) {
-            $suggestions[] = $row['BrandName']; // Add each suggestion to the array
+        while ($stmt->fetch()) {
+            $suggestions[] = $brandName; // Add each suggestion to the array
         }
 
         // Return the suggestions in JSON format
         echo json_encode($suggestions);
-        
+
         $stmt->close(); // Close the statement
     } else {
         echo json_encode(["error" => "SQL preparation failed"]);
