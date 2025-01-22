@@ -7,8 +7,8 @@ header("Content-Type: application/json");
 $query = $_GET['query'] ?? '';
 
 if (!empty($query)) {
-    // Prepare SQL query to fetch distinct descriptions
-    $sql = "SELECT DISTINCT Description FROM symptoms WHERE Description LIKE ? LIMIT 10";
+    // Prepare SQL query to fetch both SymptomID and Description
+    $sql = "SELECT SymptomID, Description FROM symptoms WHERE Description LIKE ? GROUP BY Description LIMIT 10";
     
     if ($stmt = $conn->prepare($sql)) {
         // Add wildcards for the LIKE query
@@ -18,12 +18,16 @@ if (!empty($query)) {
         // Execute the statement
         if ($stmt->execute()) {
             // Bind the result
-            $stmt->bind_result($description);
+            $stmt->bind_result($symptomID, $description);
 
             // Initialize an array for suggestions
             $suggestions = [];
             while ($stmt->fetch()) {
-                $suggestions[] = $description; // Add each description to the array
+                // Add both ID and Description to the array as an associative array
+                $suggestions[] = [
+                    "id" => $symptomID,
+                    "description" => $description
+                ];
             }
 
             // Return the suggestions as JSON
